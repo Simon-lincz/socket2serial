@@ -144,7 +144,7 @@ int openPort(int index)
 	switch(index)
 	{
 		case 0:
-			device="/dev/ttyUSB1";
+			device="/dev/ttyUSB0";
 		break;	
 		case 1:
 			device="/dev/ttyS0";

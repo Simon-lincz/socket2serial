@@ -1,5 +1,5 @@
 .PHONY:all
-all:server client serial
+all:server client serial server2serial
 
 server:server.c
 	gcc -o $@ $^

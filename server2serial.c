@@ -21,6 +21,7 @@ int init_serial(void){
 		printf("serial open error.\n");
 		exit(0);
 	}
+	//fd，115200， 
 	setPara(serial_fd,6,8,1,0);
 }
 
@@ -53,59 +54,8 @@ int main(int argc, char *argv[])
 		perror("bind");
 		return 1;
 	}
-	//----------------serial test-------------------------------------------------------------------------
-/*
-terminal settings done, now handle input
-In this example, inputting a 'z' at the beginning of a line will 
-exit the program.
-终端设置完成，现在就可以处理数据了
-在本程序中，在一行的开始输入一个 'z' 会终止该程序 
-* /
-printf("loop...\n");
-while (STOP==FALSE) { /* loop until we have a terminating condition */
-        // 循环直到满足终止条件
-/* read blocks program execution until a line terminating character is 
-input, even if more than 255 chars are input. If the number
-of characters read is smaller than the number of chars available,
-subsequent reads will return the remaining chars. res will be set
-to the actual number of characters actually read 
-即使输入超过 255 个字节，读取的程序段还是会一直等到行结束符出现才会停止。
-   如果读到的字符少于应刚获得的字符数，则剩下的字符串会在下一次读取时读到。
-serial_res 用来获得每次真正读到的字节数 
-* /
 
-printf("get input:\n");
-scanf("%s",scan_buf);
-if(!strcmp(scan_buf,"quit"))
-{
-	break;
-}
-//printf("get input completed.\n");
-serial_res = nwrite(serial_fd,scan_buf,strlen(scan_buf));
-//printf("nwrite completed.\n");
-if(serial_res != strlen(scan_buf)) continue;
-//memset(serial_buf,0,strlen(serial_buf)); //数据初始化--清零
-while(serial_res=read(serial_fd,serial_buf,255))
-{	
-	if(serial_res != -1 )
-		break;
-	//memset(serial_buf,0,strlen(serial_buf));
-}
-//printf("read completed.\n");
-//strcpy(scan_buf,serial_buf,serial_res);
-serial_buf[serial_res]='\0'; /* set end of string, so we can printf * /
-            // 设置字符串结束符，从而可以顺利使用 printf
-
-printf("str:%s len:%d\n", serial_buf, serial_res);
-
-//printf("loop...\n\n");
-if (serial_buf[0]=='z') STOP=TRUE;
-}
-
-closePort(serial_fd); 
-*/
-
-//-----------------------------------------------------------------------------------------
+	//----------------------------working------------------------------------------------------------
 	while(1){	
 		printf("waiting...\n");
 		/*监听连接请求--监听队列长度为5*/
@@ -125,12 +75,7 @@ closePort(serial_fd);
 		{
 			buf[len]='\0';
 			printf("%s\n",buf);
-			serial_res = nwrite(serial_fd,buf,strlen(buf));
-			if(send(client_sockfd,buf,len,0)<0)
-			{
-				perror("write");
-				return 1;
-			}
+			serial_res = nwrite(serial_fd,buf,strlen(buf));//通过串口发送
 		}
 	}
 	close(client_sockfd);
