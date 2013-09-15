@@ -15,7 +15,7 @@ char scan_buf[255];
 int serial_res;
 
 int init_serial(void){
-	serial_fd = openPort(0);
+	serial_fd = openPort(1);
 	if(serial_fd < 0)
 	{
 		printf("serial open error.\n");
