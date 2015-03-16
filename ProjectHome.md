@@ -1,0 +1,1 @@
+read socket data,and send to serial port.
